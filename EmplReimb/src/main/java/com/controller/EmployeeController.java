@@ -35,19 +35,22 @@ public class EmployeeController {
 			
 			ResultSet rs = ps.executeQuery();
 			
+			// user with username exists?
 			if(rs.next()) {
-				// username found
 				
 				String hashedPass = rs.getString("password_digest");
 				
+				// password is correct?
 				if(isPassword(password, hashedPass)) {
-					// credentials verified
 					
-					return new 
+					return EmployeeController.extractEmployee(rs);
+				
+				} else {
+					
+					System.out.println("Password is incorrect. Try again");
+					
 				}
 				
-			} else {
-				// username not found
 			}
 			
 		} catch(SQLException e) {
@@ -84,6 +87,33 @@ public class EmployeeController {
 		int roleId = rs.getInt("role_id");
 		
 		return new Employee(userId, firstName, lastName, email, username, roleId);
+		
+	}
+	
+	// TODO: call this method after inserting a dummy record inside Employee table
+	public static void ensureHashedPassword(String username, String password) {
+		
+		try(Connection connection = ConnectionUtil.getConnection()) {
+		
+			// TODO: Mitch talked about vulnarability of storing sensitive info in StringPool. Discuss.
+			String passwordDigest = BCrypt.hashpw(password, BCrypt.gensalt());
+			
+			String sql = "UPDATE users SET COLUMN password_digest = ? WHERE username = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, passwordDigest);
+			ps.setString(2,  username);
+			
+			if(ps.executeUpdate() != 0) {
+
+				System.out.println(username + "'s password has been stored securily.");
+			
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		
+		}
 		
 	}
 	
