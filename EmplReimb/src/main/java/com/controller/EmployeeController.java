@@ -11,11 +11,19 @@
 
 package com.controller;
 
+import com.models.Employee;
+
 public class EmployeeController {
 
-	// FIGVAPER
-	
 	// findByCredentails
+	public Employee findByCredentials(String username, String password) {
+		
+		// query for username
+		
+		// check if password is a match
+		
+		return null;
+	}
 	
 	// isPassword
 	
