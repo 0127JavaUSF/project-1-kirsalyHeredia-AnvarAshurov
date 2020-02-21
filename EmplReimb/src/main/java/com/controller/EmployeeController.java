@@ -11,10 +11,12 @@
 
 package com.controller;
 
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -23,6 +25,9 @@ import com.util.ConnectionUtil;
 
 public class EmployeeController {
 
+	private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+	private static final SecureRandom secureRandom = new SecureRandom();
+	
 	// findByCredentails
 	public static Employee findByCredentials(String username, String password) {
 		
@@ -90,12 +95,16 @@ public class EmployeeController {
 		
 	}
 	
-	// TODO: call this method after inserting a dummy record inside Employee table
-	public static void ensureHashedPassword(String username, String password) {
+	/**
+	 *  TODO: call this method after inserting a dummy record inside Employee table
+	*/
+	public static void updatePassword(String username, String password) {
 		
 		try(Connection connection = ConnectionUtil.getConnection()) {
 		
-			// TODO: Mitch talked about vulnarability of storing sensitive info in StringPool. Discuss.
+			/**
+			 *  TODO: Mitch talked about vulnarability of storing sensitive info in StringPool. Discuss.
+			 */
 			String passwordDigest = BCrypt.hashpw(password, BCrypt.gensalt());
 			
 			String sql = "UPDATE users SET COLUMN password_digest = ? WHERE username = ?";
@@ -118,21 +127,34 @@ public class EmployeeController {
 	}
 	
 	// generateSessionToken
+	public static String generateSessionToken() {
+		
+		/**
+		 * Returns a Base64.Encoder that encodes using the URL and Filename safe type base64 encoding scheme.
+		 */
+		byte[] randomBytes = new byte[24];
+		/**
+		 * Parameters: bytes - the array to be filled in with random bytes.
+		 */
+		secureRandom.nextBytes(randomBytes);
+		/**
+		 * Encodes the specified byte array into a String using the Base64 encoding scheme.
+		 * Parameter: the byte array to encode
+		 */
+		return base64Encoder.encodeToString(randomBytes);
+		
+	}
 	
 	// All Model Level Validations
-	
-	// Accesssors - not necessary
-	
-	// setPassword
-	
+			
 	// ensureSessionToken
+	
+	
 	
 	// resetSessionToken
 	
 	// getSessionToken
 	
 	// setSessionToken
-	
-	// updatePassword
-	
+		
 }
