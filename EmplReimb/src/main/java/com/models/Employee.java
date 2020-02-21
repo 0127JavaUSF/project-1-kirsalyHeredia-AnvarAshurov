@@ -24,12 +24,12 @@ package com.models;
 public class Employee {
 	
 	private int userId;
-	private String username;
-	private String password;
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String username;
 	private int roleId;
+	private String password;
 	
 	public Employee(int userId, String firstName, String lastName, String email, String username, int roleId) {
 		this.userId = userId;
