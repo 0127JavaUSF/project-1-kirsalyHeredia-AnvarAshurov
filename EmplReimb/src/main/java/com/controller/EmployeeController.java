@@ -144,17 +144,27 @@ public class EmployeeController {
 		return base64Encoder.encodeToString(randomBytes);
 		
 	}
-	
-	// All Model Level Validations
-			
-	// ensureSessionToken
-	
-	
-	
-	// resetSessionToken
-	
-	// getSessionToken
-	
-	// setSessionToken
+						
+	public String resetSessionToken(Employee empl) {
 		
+		String tkn = EmployeeController.generateSessionToken();
+		
+		try(Connection connection = ConnectionUtil.getConnection()) {
+		
+			String sql = "UPDATE users SET session_token = ? WHERE username = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, tkn);
+			ps.setString(2, empl.getUsername());
+			
+			if(ps.executeUpdate() != 0) {
+				return tkn;	
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 }
