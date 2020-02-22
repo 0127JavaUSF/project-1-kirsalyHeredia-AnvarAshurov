@@ -11,10 +11,11 @@ public static Connection getConnection() {
 		
 	//environment variables to connect to database
 	String url = System.getenv("JDBC_URL");
-	String uname = System.getenv("TEMP_UNAME");
-	String pword = System.getenv("TEMP_PWORD");
-	
+	String uname = System.getenv("uname");
+	String pword = System.getenv("pword");
+
 	try {
+		System.out.println("Trying to connect to the database...");
 		return DriverManager.getConnection(url, uname, pword);
 	} catch (SQLException e) {
 		e.printStackTrace();
