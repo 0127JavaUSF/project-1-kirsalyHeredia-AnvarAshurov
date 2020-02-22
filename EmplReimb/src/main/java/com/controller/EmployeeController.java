@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -145,7 +146,7 @@ public class EmployeeController {
 		
 	}
 						
-	public String resetSessionToken(Employee empl) {
+	public static String resetSessionToken(Employee empl) {
 		
 		String tkn = EmployeeController.generateSessionToken();
 		
@@ -165,6 +166,32 @@ public class EmployeeController {
 		}
 		
 		return null;
+	}
+	
+	public static ArrayList<Employee> all() {
+		
+		ArrayList<Employee> allEmpl = new ArrayList<>();
+		
+		try(Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM users";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				Employee tpm = EmployeeController.extractEmployee(rs);
+				
+				if(tpm != null) {
+					allEmpl.add(tpm);	
+				}
+			}
+							
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		return allEmpl;
+		
 	}
 
 }
