@@ -11,7 +11,7 @@ public class Reimbursement {
 	private int author;
  	private int resolver;
 	private int statusID;
-	private int statusType;
+	private int typeID;
 	
 	
 	// getters and setters ----------------------------
@@ -87,19 +87,19 @@ public class Reimbursement {
 		this.statusID = statusID;
 	}
 	
-	public int getStatusType() {
-		return statusType;
+	public int getTypeID() {
+		return typeID;
 	}
 	
-	public void setStatusType(int statusType) {
-		this.statusType = statusType;
+	public void setStatusType(int typeID) {
+		this.typeID = typeID;
 	}
 	
 	
 	// constructors ----------------------------
 
 	public Reimbursement(int reimbID, int amount, String submitted, String resolved, String description, String receipt,
-			int author, int resolver, int statusID, int statusType) {
+			int author, int resolver, int statusID, int typeID) {
 		super();
 		this.reimbID = reimbID;
 		this.amount = amount;
@@ -110,7 +110,7 @@ public class Reimbursement {
 		this.author = author;
 		this.resolver = resolver;
 		this.statusID = statusID;
-		this.statusType = statusType;
+		this.typeID = typeID;
 	}
 	
 	public Reimbursement() {
@@ -131,7 +131,7 @@ public class Reimbursement {
 		result = prime * result + ((resolved == null) ? 0 : resolved.hashCode());
 		result = prime * result + resolver;
 		result = prime * result + statusID;
-		result = prime * result + statusType;
+		result = prime * result + typeID;
 		result = prime * result + ((submitted == null) ? 0 : submitted.hashCode());
 		return result;
 	}
@@ -170,7 +170,7 @@ public class Reimbursement {
 			return false;
 		if (statusID != other.statusID)
 			return false;
-		if (statusType != other.statusType)
+		if (typeID != other.typeID)
 			return false;
 		if (submitted == null) {
 			if (other.submitted != null)
@@ -184,7 +184,7 @@ public class Reimbursement {
 	public String toString() {
 		return "Reimbursement [reimbID=" + reimbID + ", amount=" + amount + ", submitted=" + submitted + ", resolved="
 				+ resolved + ", description=" + description + ", receipt=" + receipt + ", author=" + author
-				+ ", resolver=" + resolver + ", statusID=" + statusID + ", statusType=" + statusType + "]";
+				+ ", resolver=" + resolver + ", statusID=" + statusID + ", typeID=" + typeID + "]";
 	}
 	
 }
