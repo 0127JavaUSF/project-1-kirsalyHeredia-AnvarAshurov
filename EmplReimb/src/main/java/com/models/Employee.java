@@ -23,17 +23,21 @@ package com.models;
 
 public class Employee {
 	
-	private String username;
-	private String password;
+	private int userId;
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String username;
+	private int roleId;
+	private String password;
 	
-	public Employee(String firstName, String lastName, String email, String username) {
+	public Employee(int userId, String firstName, String lastName, String email, String username, int roleId) {
+		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.username = username;
+		this.roleId = roleId;
 	}
 	
 	public String getFirstName() {
@@ -76,6 +80,8 @@ public class Employee {
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + roleId;
+		result = prime * result + userId;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -109,6 +115,10 @@ public class Employee {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
+		if (roleId != other.roleId)
+			return false;
+		if (userId != other.userId)
+			return false;
 		if (username == null) {
 			if (other.username != null)
 				return false;
@@ -119,8 +129,10 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", email=" + email + "]";
-	}	
+		return "Employee [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", email=" + email + ", roleId=" + roleId + "]";
+	}
+
+	
 	
 }
