@@ -10,7 +10,7 @@ import java.util.List;
 import com.models.Reimbursement;
 import com.util.ConnectionUtil;
 
-public class ReimbursementDao {
+public class ReimbDao {
 	
 	//extract the db values into a java reimb object
 	static Reimbursement extractReimb(ResultSet result) throws SQLException {
@@ -35,7 +35,7 @@ public class ReimbursementDao {
 		
 		try(Connection connection = ConnectionUtil.getConnection()) { //get connection
 			
-			String sql = "SELECT * FROM reimbursement " +
+			String sql = "SELECT * FROM reimbursements " +
 					"WHERE reimbID = ?";
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -72,8 +72,8 @@ public class ReimbursementDao {
 		
 		try(Connection connection = ConnectionUtil.getConnection()) {
 					
-			String sql = "INSERT INTO reimbursement (amount, description, receipt, author, status_ID, type_ID) " +
-					" VALUES (?, ?, ?, ?) RETURNING *"; 
+			String sql = "INSERT INTO reimbursements (amount, description, receipt, author, status_ID, type_ID) " +
+					" VALUES (?, ?, ?, ?, ?, ?) RETURNING *"; 
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
@@ -81,7 +81,7 @@ public class ReimbursementDao {
 			statement.setString(2, reimbursement.getDescription());
 			statement.setString(3, reimbursement.getReceipt());
 			statement.setInt(4, reimbursement.getAuthor());
-			statement.setInt(5,1); //all new reimb will have a status of pending(id=1)
+			statement.setInt(5, reimbursement.getStatusID());
 			statement.setInt(6, reimbursement.getTypeID()); 
 			
 			ResultSet result = statement.executeQuery();
@@ -102,7 +102,7 @@ public class ReimbursementDao {
 	public static Reimbursement updateReimb(int reimbID, int statusID, int resolver) {
 		try(Connection connection = ConnectionUtil.getConnection()) {
 			
-			String sql = "UPDATE reimbursement SET status_ID = ?," +
+			String sql = "UPDATE reimbursements SET status_ID = ?," +
 					"resolver = ?" +
 					" WHERE reimb_ID = ? RETURNING *"; 
 			
@@ -129,7 +129,7 @@ public class ReimbursementDao {
 		List<Reimbursement> allReimbursements = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.getConnection()){
 			
-			String sql = "SELECT * FROM reimbursment RETURNING *";
+			String sql = "SELECT * FROM reimbursments RETURNING *";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
 			

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reimb Test</title>
+</head>
+<body>
+    
+	<form "/EmplReimb/createReimb" method="POST">
+	    <label for="exampleFormControlInput1">Amount</label>
+	    <input name="amount" type="number" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+	  
+	    <label for="exampleFormControlSelect1">Type</label>
+	    <select name="type" class="form-control" id="exampleFormControlSelect1">
+	      <option>Lodging</option>
+	      <option>Travel</option>
+	      <option>Food</option>
+	      <option>Other</option>
+	    </select>
+	  
+	    <label for="description">Description</label>
+	    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+	  
+    	<label for="exampleFormControlFile1">Upload Receipt</label>
+    	<input name="receipt" type="file" class="form-control-file" id="exampleFormControlFile1">
+	  	
+	  	<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+
+
+
+</body>
+</html>
