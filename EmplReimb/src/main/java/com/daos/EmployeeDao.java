@@ -9,7 +9,7 @@
  
  */
 
-package com.controller;
+package com.daos;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -24,7 +24,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.models.Employee;
 import com.util.ConnectionUtil;
 
-public class EmployeeController {
+public class EmployeeDao {
 
 	private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 	private static final SecureRandom secureRandom = new SecureRandom();
@@ -49,7 +49,7 @@ public class EmployeeController {
 				// password is correct?
 				if(isPassword(password, hashedPass)) {
 					
-					return EmployeeController.extractEmployee(rs);
+					return EmployeeDao.extractEmployee(rs);
 				
 				} else {
 					
@@ -148,7 +148,7 @@ public class EmployeeController {
 						
 	public static String resetSessionToken(Employee empl) {
 		
-		String tkn = EmployeeController.generateSessionToken();
+		String tkn = EmployeeDao.generateSessionToken();
 		
 		try(Connection connection = ConnectionUtil.getConnection()) {
 		
@@ -179,10 +179,10 @@ public class EmployeeController {
 			
 			while(rs.next()) {
 				
-				Employee tpm = EmployeeController.extractEmployee(rs);
+				Employee tpm = EmployeeDao.extractEmployee(rs);
 				
 				if(tpm != null) {
-					allEmpl.add(tpm);	
+					allEmpl.add(tpm);
 				}
 			}
 							

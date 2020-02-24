@@ -4,4 +4,15 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  
+	<servlet>
+		<servlet-name>empl-servlet</servlet-name>
+		<servlet-class>com.servlets.EmployeeServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>empl-servlet</servlet-name>
+		<url-pattern>/users</url-pattern>
+	</servlet-mapping>
+
 </web-app>

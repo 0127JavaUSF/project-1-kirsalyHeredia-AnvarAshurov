@@ -8,10 +8,7 @@ public class test {
 	
 		Connection connection = ConnectionUtil.getConnection();
 		System.out.println(connection);
-		
-		System.out.println(EmployeeController.all());
-		
-		System.out.println("URL is: " + System.getenv("TEST"));
-		
+		System.out.println(EmployeeController.all().toString());
+			
 	}
 }

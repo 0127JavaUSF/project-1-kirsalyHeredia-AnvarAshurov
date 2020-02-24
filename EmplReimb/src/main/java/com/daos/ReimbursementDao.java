@@ -52,10 +52,8 @@ public class ReimbursementDao {
 			
 			statement.executeQuery();
 				
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-			return null;
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
