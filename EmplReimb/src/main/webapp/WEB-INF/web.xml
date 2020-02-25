@@ -4,6 +4,7 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+<<<<<<< HEAD
   
 	<servlet>
 		<servlet-name>empl-servlet</servlet-name>
@@ -15,4 +16,17 @@
 		<url-pattern>/users</url-pattern>
 	</servlet-mapping>
 
+=======
+    
+  <servlet>
+		<servlet-name>newReimb-servlet</servlet-name>
+		<servlet-class>com.servlets.ReimbServlet</servlet-class>
+	</servlet>
+	
+  <servlet-mapping>
+		<servlet-name>newReimb-servlet</servlet-name>
+		<url-pattern>/creatReimb</url-pattern>
+	</servlet-mapping>
+	
+>>>>>>> b9d77c2160a1532438894711c3013accb8764b69
 </web-app>
