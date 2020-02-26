@@ -33,7 +33,7 @@
 		
 	  <servlet-mapping>
 			<servlet-name>newReimb-servlet</servlet-name>
-			<url-pattern>/creatReimb</url-pattern>
+			<url-pattern>/create</url-pattern>
 	  </servlet-mapping>
 	  <servlet-mapping>
 	  		<servlet-name>SessionServlet</servlet-name>
