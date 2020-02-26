@@ -8,9 +8,8 @@ import java.sql.SQLException;
 public class ConnectionUtil {
 
 public static Connection getConnection() {
-		
-	//environment variables to connect to database
-	String url = System.getenv("JDBC_URL");
+
+	String url = "jdbc:postgresql://project1db.clcnvzawjmzr.us-east-2.rds.amazonaws.com:5432/postgres";
 	String uname = System.getenv("uname");
 	String pword = System.getenv("pword");
 

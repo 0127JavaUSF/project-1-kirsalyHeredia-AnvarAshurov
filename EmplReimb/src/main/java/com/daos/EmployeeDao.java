@@ -9,7 +9,7 @@
  
  */
 
-package com.controller;
+package com.daos;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -24,17 +24,16 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.models.Employee;
 import com.util.ConnectionUtil;
 
-public class EmployeeController {
+public class EmployeeDao {
 
 	private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 	private static final SecureRandom secureRandom = new SecureRandom();
 	
 	// findByCredentails
 	public static Employee findByCredentials(String username, String password) {
-		
-		// query for username
+
 		try(Connection connection = ConnectionUtil.getConnection()) {
-			
+
 			String sql = "SELECT * FROM users WHERE username = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, username);
@@ -43,26 +42,44 @@ public class EmployeeController {
 			
 			// user with username exists?
 			if(rs.next()) {
-				
-				String hashedPass = rs.getString("password_digest");
+				System.out.println("Username exists. Checking password...");
+				//String hashedPass = rs.getString("password_digest");
+				String hashedPass = rs.getString("password");
 				
 				// password is correct?
-				if(isPassword(password, hashedPass)) {
-					
-					return EmployeeController.extractEmployee(rs);
-				
-				} else {
-					
+				//if(isPassword(password, hashedPass)) {
+				if(hashedPass.compareTo(password) == 0) {
+					return EmployeeDao.extractEmployee(rs);
+				} else {	
 					System.out.println("Password is incorrect. Try again");
-					
 				}
 				
+			} else {
+				System.out.println("No username match");
 			}
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
+		return null;
+	}
+	
+	public static Employee findByCredentials(String tkn) {
+		
+		try(Connection connection = ConnectionUtil.getConnection()) {
+			
+			String sql = "SELECT * FROM users WHERE session_token = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, tkn);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return EmployeeDao.extractEmployee(rs);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
@@ -148,7 +165,7 @@ public class EmployeeController {
 						
 	public static String resetSessionToken(Employee empl) {
 		
-		String tkn = EmployeeController.generateSessionToken();
+		String tkn = EmployeeDao.generateSessionToken();
 		
 		try(Connection connection = ConnectionUtil.getConnection()) {
 		
@@ -179,10 +196,10 @@ public class EmployeeController {
 			
 			while(rs.next()) {
 				
-				Employee tpm = EmployeeController.extractEmployee(rs);
+				Employee tpm = EmployeeDao.extractEmployee(rs);
 				
 				if(tpm != null) {
-					allEmpl.add(tpm);	
+					allEmpl.add(tpm);
 				}
 			}
 							

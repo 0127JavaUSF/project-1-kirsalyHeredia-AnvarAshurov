@@ -1,6 +1,6 @@
 package com.util;
 
-import com.controller.EmployeeController;
+import com.daos.EmployeeDao;
 import com.models.Employee;
 
 /**
@@ -21,14 +21,14 @@ public class SessionUtil {
 	
 	public static void login(Employee empl) {
 		
-		SessionUtil.setSessionToken(EmployeeController.resetSessionToken(empl));
+		SessionUtil.setSessionToken(EmployeeDao.resetSessionToken(empl));
 		SessionUtil.setCurrentUser(empl);
 		
 	}
 	
 	public static void logout() {
 
-		EmployeeController.resetSessionToken(SessionUtil.getCurrentUser());
+		EmployeeDao.resetSessionToken(SessionUtil.getCurrentUser());
 		SessionUtil.setCurrentUser(null);
 		SessionUtil.setSessionToken(null);
 		

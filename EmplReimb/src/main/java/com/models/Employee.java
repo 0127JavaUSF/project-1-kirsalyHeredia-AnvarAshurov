@@ -132,7 +132,5 @@ public class Employee {
 		return "Employee [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email + ", roleId=" + roleId + "]";
 	}
-
-	
 	
 }
