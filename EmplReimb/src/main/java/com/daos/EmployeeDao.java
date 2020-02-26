@@ -31,10 +31,9 @@ public class EmployeeDao {
 	
 	// findByCredentails
 	public static Employee findByCredentials(String username, String password) {
-		
-		// query for username
+
 		try(Connection connection = ConnectionUtil.getConnection()) {
-			
+
 			String sql = "SELECT * FROM users WHERE username = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, username);
@@ -43,20 +42,20 @@ public class EmployeeDao {
 			
 			// user with username exists?
 			if(rs.next()) {
-				
-				String hashedPass = rs.getString("password_digest");
+				System.out.println("Username exists. Checking password...");
+				//String hashedPass = rs.getString("password_digest");
+				String hashedPass = rs.getString("password");
 				
 				// password is correct?
-				if(isPassword(password, hashedPass)) {
-					
+				//if(isPassword(password, hashedPass)) {
+				if(hashedPass.compareTo(password) == 0) {
 					return EmployeeDao.extractEmployee(rs);
-				
-				} else {
-					
+				} else {	
 					System.out.println("Password is incorrect. Try again");
-					
 				}
 				
+			} else {
+				System.out.println("No username match");
 			}
 			
 		} catch(SQLException e) {

@@ -3,30 +3,45 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+
   <display-name>Archetype Created Web Application</display-name>
-<<<<<<< HEAD
   
 	<servlet>
 		<servlet-name>empl-servlet</servlet-name>
 		<servlet-class>com.servlets.EmployeeServlet</servlet-class>
 	</servlet>
 	
-	<servlet-mapping>
+	 <servlet>
+			<servlet-name>newReimb-servlet</servlet-name>
+			<servlet-class>com.servlets.ReimbServlet</servlet-class>
+	  </servlet>
+  
+	  <servlet>
+	  		<servlet-name>LoginServlet</servlet-name>
+	  		<servlet-class>com.servlets.LoginServlet</servlet-class>
+	  </servlet>
+	  <servlet>
+	  	<servlet-name>DriverClass</servlet-name>
+	  	<servlet-class>com.servlets.DriverClass</servlet-class>
+	  	<load-on-startup>0</load-on-startup>
+	  </servlet>
+	 
+	  <servlet-mapping>
 		<servlet-name>empl-servlet</servlet-name>
 		<url-pattern>/users</url-pattern>
-	</servlet-mapping>
-
-=======
-    
-  <servlet>
-		<servlet-name>newReimb-servlet</servlet-name>
-		<servlet-class>com.servlets.ReimbServlet</servlet-class>
-	</servlet>
-	
-  <servlet-mapping>
-		<servlet-name>newReimb-servlet</servlet-name>
-		<url-pattern>/creatReimb</url-pattern>
-	</servlet-mapping>
-	
->>>>>>> b9d77c2160a1532438894711c3013accb8764b69
+		</servlet-mapping>
+		
+	  <servlet-mapping>
+			<servlet-name>newReimb-servlet</servlet-name>
+			<url-pattern>/creatReimb</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	  		<servlet-name>LoginServlet</servlet-name>
+	  		<url-pattern>/LoginServlet</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	  	<servlet-name>DriverClass</servlet-name>
+	  	<url-pattern>/DriverClass</url-pattern>
+	  </servlet-mapping>
+		
 </web-app>
