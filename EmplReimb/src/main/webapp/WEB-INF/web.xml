@@ -17,8 +17,8 @@
 	  </servlet>
   
 	  <servlet>
-	  		<servlet-name>LoginServlet</servlet-name>
-	  		<servlet-class>com.servlets.LoginServlet</servlet-class>
+	  		<servlet-name>SessionServlet</servlet-name>
+	  		<servlet-class>com.servlets.SessionServlet</servlet-class>
 	  </servlet>
 	  <servlet>
 	  	<servlet-name>DriverClass</servlet-name>
@@ -36,8 +36,8 @@
 			<url-pattern>/creatReimb</url-pattern>
 	  </servlet-mapping>
 	  <servlet-mapping>
-	  		<servlet-name>LoginServlet</servlet-name>
-	  		<url-pattern>/LoginServlet</url-pattern>
+	  		<servlet-name>SessionServlet</servlet-name>
+	  		<url-pattern>/SessionServlet</url-pattern>
 	  </servlet-mapping>
 	  <servlet-mapping>
 	  	<servlet-name>DriverClass</servlet-name>

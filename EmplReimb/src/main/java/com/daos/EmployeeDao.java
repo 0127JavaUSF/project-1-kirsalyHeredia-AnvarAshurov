@@ -65,6 +65,24 @@ public class EmployeeDao {
 		return null;
 	}
 	
+	public static Employee findByCredentials(String tkn) {
+		
+		try(Connection connection = ConnectionUtil.getConnection()) {
+			
+			String sql = "SELECT * FROM users WHERE session_token = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, tkn);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return EmployeeDao.extractEmployee(rs);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static boolean isPassword(String plainText, String hashed) {
 		
 		return BCrypt.checkpw(plainText, hashed);
