@@ -8,7 +8,7 @@
 </head>
 <body>
     
-	<form "/EmplReimb/createReimb" method="POST">
+	<form action="/EmplReimb/create" method="POST">
 	    <label for="exampleFormControlInput1">Amount</label>
 	    <input name="amount" type="number" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
 	  
@@ -25,8 +25,8 @@
 	  
     	<label for="exampleFormControlFile1">Upload Receipt</label>
     	<input name="receipt" type="file" class="form-control-file" id="exampleFormControlFile1">
-	  	
-	  	<button type="submit" class="btn btn-primary">Submit</button>
+	  	<input type="submit" value="Create">
+	  	<!-- button type="submit" class="btn btn-primary">Submit</button> -->
 	</form>
 
 
