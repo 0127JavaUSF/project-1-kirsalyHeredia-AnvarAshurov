@@ -14,7 +14,7 @@ public class ReimbDao {
 	
 	//extract the db values into a java reimb object
 	static Reimbursement extractReimb(ResultSet result) throws SQLException {
-		int reimbID = result.getInt("reim_ID");
+		int reimbID = result.getInt("reimb_ID");
 		int amount = result.getInt("amount");
 		String submitted = result.getString("submitted");
 		String resolved = result.getString("resolved");
