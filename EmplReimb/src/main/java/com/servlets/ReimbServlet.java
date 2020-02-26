@@ -14,6 +14,25 @@ import com.service.ReimbService;
 public class ReimbServlet extends HttpServlet{
 
 	@Override
+	public void init() throws ServletException {
+		System.out.println("Servlet initializing");
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+		resp.addHeader("Access-Control-Allow-Methods", "GET POST PUT DELETE");
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		
+		super.service(req, resp);
+	}
+	
+	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		ObjectMapper om = new ObjectMapper();
