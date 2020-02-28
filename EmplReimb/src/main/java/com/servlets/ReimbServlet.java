@@ -13,6 +13,8 @@ import com.service.ReimbService;
 
 public class ReimbServlet extends HttpServlet{
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void init() throws ServletException {
 		System.out.println("Servlet initializing");
