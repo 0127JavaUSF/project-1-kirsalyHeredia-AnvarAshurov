@@ -23,6 +23,15 @@ public class EmployeeServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+		resp.addHeader("Access-Control-Allow-Methods", "GET POST PUT DELETE");
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		
+		super.service(req, resp);
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

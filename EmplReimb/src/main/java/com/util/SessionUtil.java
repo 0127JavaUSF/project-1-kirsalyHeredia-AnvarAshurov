@@ -16,13 +16,25 @@ public class SessionUtil {
 	// ensureLoggedIn method will REDIRECT to LOGIN page if USER is not logged in
 	
 	public static boolean isLoggedIn() {
-		return SessionUtil.getCurrentUser() == null;
+		
+		System.out.println(SessionUtil.getCurrentUser());
+		
+		if(SessionUtil.currentUser != null) {
+			return true;
+		} else {
+			return false;
+		}
+//		return SessionUtil.getCurrentUser() == null;
 	}
 	
-	public static void login(Employee empl) {
+	public static void login(String username, String password) {
 		
-		SessionUtil.setSessionToken(EmployeeDao.resetSessionToken(empl));
-		SessionUtil.setCurrentUser(empl);
+		Employee empl = EmployeeDao.findByCredentials(username, password);
+		
+		if(empl != null) {
+			SessionUtil.setSessionToken(EmployeeDao.resetSessionToken(empl));
+			SessionUtil.setCurrentUser(empl);			
+		}
 		
 	}
 	
