@@ -129,7 +129,7 @@ public class ReimbDao {
 		List<Reimbursement> allReimbursements = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.getConnection()){
 			
-			String sql = "SELECT * FROM reimbursments RETURNING *";
+			String sql = "SELECT * FROM reimbursements";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
 			
@@ -153,13 +153,9 @@ public class ReimbDao {
 		List<Reimbursement> userReimbs = new ArrayList<>();
 		
 		try (Connection connection = ConnectionUtil.getConnection()){
-					
-			String sql = "select * from reimbursements " + "where author = ?";
-			 			
-//			String sql = "SELECT reimb_id, amount, submitted, resolved, description, receipt, reimbursement_type.type , reimbursement_status.status from reimbursements\r\n" + 
-//					"			JOIN  reimbursement_status ON reimbursements.status_id = reimbursement_status.status_id \r\n" + 
-//					"			JOIN  reimbursement_type ON reimbursements.type_id = reimbursement_type.type_id \r\n" + 
-//					"			where author = ?";
+			System.out.println(author);		
+			
+			String sql = "SELECT * FROM reimbursements " + "WHERE author = ?";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, author);
@@ -170,7 +166,7 @@ public class ReimbDao {
 			}		
 			
 		} catch(SQLException e) {
-			
+			e.printStackTrace();
 		}
 		
 		return userReimbs;
