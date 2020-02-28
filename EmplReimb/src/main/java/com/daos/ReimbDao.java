@@ -14,7 +14,7 @@ public class ReimbDao {
 	
 	//extract the db values into a java reimb object
 	static Reimbursement extractReimb(ResultSet result) throws SQLException {
-		int reimbID = result.getInt("reim_ID");
+		int reimbID = result.getInt("reimb_ID");
 		int amount = result.getInt("amount");
 		String submitted = result.getString("submitted");
 		String resolved = result.getString("resolved");
@@ -36,7 +36,7 @@ public class ReimbDao {
 		try(Connection connection = ConnectionUtil.getConnection()) { //get connection
 			
 			String sql = "SELECT * FROM reimbursements " +
-					"WHERE reimbID = ?";
+					"WHERE reimb_ID = ?";
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
@@ -148,22 +148,26 @@ public class ReimbDao {
 	
 	
 	
-	public static List<Reimbursement> userReimbs(){
+	public static List<Reimbursement> userReimbs(int author){
 		
 		List<Reimbursement> userReimbs = new ArrayList<>();
 		
 		try (Connection connection = ConnectionUtil.getConnection()){
-			
-			String sql = "";
+					
+			String sql = "select * from reimbursements " + "where author = ?";
+			 			
+//			String sql = "SELECT reimb_id, amount, submitted, resolved, description, receipt, reimbursement_type.type , reimbursement_status.status from reimbursements\r\n" + 
+//					"			JOIN  reimbursement_status ON reimbursements.status_id = reimbursement_status.status_id \r\n" + 
+//					"			JOIN  reimbursement_type ON reimbursements.type_id = reimbursement_type.type_id \r\n" + 
+//					"			where author = ?";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
-			
+			ps.setInt(1, author);
 			ResultSet result = ps.executeQuery();
 			
 			while(result.next()) {
 				userReimbs.add(extractReimb(result));
-			}
-			
+			}		
 			
 		} catch(SQLException e) {
 			
@@ -171,7 +175,5 @@ public class ReimbDao {
 		
 		return userReimbs;
 	}
-	
-	
 	
 }
