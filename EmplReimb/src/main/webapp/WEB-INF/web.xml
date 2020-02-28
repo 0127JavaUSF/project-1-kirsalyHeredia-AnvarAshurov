@@ -25,6 +25,16 @@
 	  	<servlet-class>com.servlets.DriverClass</servlet-class>
 	  	<load-on-startup>0</load-on-startup>
 	  </servlet>
+	  <servlet>
+	  	<servlet-name>UpdateServlet</servlet-name>
+	  	<display-name>UpdateServlet</display-name>
+	  	<description></description>
+	  	<servlet-class>com.servlets.UpdateServlet</servlet-class>
+	  </servlet>
+	  <servlet>
+	  	<servlet-name>DisplayServlet</servlet-name>
+	  	<servlet-class>com.servlets.AllReimbServlet</servlet-class>
+	  </servlet>
 	 
 	  <servlet-mapping>
 		<servlet-name>empl-servlet</servlet-name>
@@ -42,6 +52,14 @@
 	  <servlet-mapping>
 	  	<servlet-name>DriverClass</servlet-name>
 	  	<url-pattern>/DriverClass</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	  	<servlet-name>UpdateServlet</servlet-name>
+	  	<url-pattern>/UpdateServlet</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	  	<servlet-name>DisplayServlet</servlet-name>
+	  	<url-pattern>/display/*</url-pattern>
 	  </servlet-mapping>
 		
 </web-app>

@@ -20,16 +20,9 @@ public class ReimbService {
 	
 	public static void validateUpdate(String status) {
 		
-		int statusID=1;
-		
-		switch(status) {
-			case "Approve": statusID = 2; break;
-			case "Deny": statusID = 3; break;
-		}
-		
 		//hardcode 2 for billy until session works
 		//hardcode id 2
-		ReimbDao.updateReimb(2, statusID, 2);
+//		/ReimbDao.updateReimb(2, statusID, 2);
 		
 	}
 	

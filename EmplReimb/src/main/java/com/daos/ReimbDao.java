@@ -36,7 +36,7 @@ public class ReimbDao {
 		try(Connection connection = ConnectionUtil.getConnection()) { //get connection
 			
 			String sql = "SELECT * FROM reimbursements " +
-					"WHERE reimbID = ?";
+					"WHERE reimb_ID = ?";
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
@@ -148,16 +148,17 @@ public class ReimbDao {
 	
 	
 	
-	public static List<Reimbursement> userReimbs(){
+	public static List<Reimbursement> userReimbs(int author){
 		
 		List<Reimbursement> userReimbs = new ArrayList<>();
 		
 		try (Connection connection = ConnectionUtil.getConnection()){
 			
-			String sql = "";
+			String sql = "SELECT * from reimbursements " + 
+					"WHERE author = ?";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
-			
+			ps.setInt(1, author);
 			ResultSet result = ps.executeQuery();
 			
 			while(result.next()) {
