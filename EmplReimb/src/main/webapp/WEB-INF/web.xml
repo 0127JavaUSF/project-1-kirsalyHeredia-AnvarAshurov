@@ -35,6 +35,10 @@
 	  	<servlet-name>DisplayServlet</servlet-name>
 	  	<servlet-class>com.servlets.AllReimbServlet</servlet-class>
 	  </servlet>
+	  <servlet>
+	  	<servlet-name>AdminServlet</servlet-name>
+	  	<servlet-class>com.servlets.AdminServlet</servlet-class>
+	  </servlet>
 	 
 	  <servlet-mapping>
 		<servlet-name>empl-servlet</servlet-name>
@@ -61,5 +65,8 @@
 	  	<servlet-name>DisplayServlet</servlet-name>
 	  	<url-pattern>/display/*</url-pattern>
 	  </servlet-mapping>
-		
+	  <servlet-mapping>
+	  	<servlet-name>AdminServlet</servlet-name>
+	  	<url-pattern>/admin-display</url-pattern>
+	  </servlet-mapping>
 </web-app>
