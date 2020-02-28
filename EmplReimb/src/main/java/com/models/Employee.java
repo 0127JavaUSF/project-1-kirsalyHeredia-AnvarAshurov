@@ -30,14 +30,17 @@ public class Employee {
 	private String username;
 	private int roleId;
 	private String password;
+	private String sessionToken;
 	
-	public Employee(int userId, String firstName, String lastName, String email, String username, int roleId) {
+	public Employee(int userId, String firstName, String lastName, String email, String username, int roleId, String sessionToken, String password) {
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.username = username;
 		this.roleId = roleId;
+		this.sessionToken = sessionToken;
+		this.password = password;
 	}
 	
 	public String getFirstName() {
@@ -71,7 +74,39 @@ public class Employee {
 	public void setUsername(String username) {
 		this.username = username;
 	}
- 
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getSessionToken() {
+		return sessionToken;
+	}
+
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,6 +116,7 @@ public class Employee {
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + roleId;
+		result = prime * result + ((sessionToken == null) ? 0 : sessionToken.hashCode());
 		result = prime * result + userId;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -117,6 +153,11 @@ public class Employee {
 			return false;
 		if (roleId != other.roleId)
 			return false;
+		if (sessionToken == null) {
+			if (other.sessionToken != null)
+				return false;
+		} else if (!sessionToken.equals(other.sessionToken))
+			return false;
 		if (userId != other.userId)
 			return false;
 		if (username == null) {
@@ -129,8 +170,10 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email + ", roleId=" + roleId + "]";
+		return "Employee [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", username=" + username + ", roleId=" + roleId + ", password=" + password + ", sessionToken="
+				+ sessionToken + "]";
 	}
+
 	
 }

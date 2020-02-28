@@ -49,6 +49,7 @@ public class EmployeeDao {
 				// password is correct?
 				//if(isPassword(password, hashedPass)) {
 				if(hashedPass.compareTo(password) == 0) {
+					System.out.println("Password is correct");
 					return EmployeeDao.extractEmployee(rs);
 				} else {	
 					System.out.println("Password is incorrect. Try again");
@@ -107,9 +108,11 @@ public class EmployeeDao {
 		String lastName = rs.getString("last_name");
 		String email = rs.getString("email");
 		String username = rs.getString("username");
+		String sessionToken = rs.getString("session_token");
 		int roleId = rs.getInt("role_id");
+		String password = rs.getString("password");
 		
-		return new Employee(userId, firstName, lastName, email, username, roleId);
+		return new Employee(userId, firstName, lastName, email, username, roleId, sessionToken, password);
 		
 	}
 	
