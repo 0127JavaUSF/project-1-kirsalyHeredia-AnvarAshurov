@@ -21,8 +21,7 @@ public class ReimbService {
 	public static void validateUpdate(Reimbursement reimb) {
 		
 		//hardcode 2 for reimbID
-		//hardcode id 2 for resolver
-		ReimbDao.updateReimb(2, reimb.getStatusID(), 2);
+		ReimbDao.updateReimb(4, reimb.getStatusID(), reimb.getResolver());
 		
 	}
 	

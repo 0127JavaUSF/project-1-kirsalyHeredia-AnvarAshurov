@@ -101,26 +101,27 @@ public class ReimbDao {
 	// update the status of reimb, add the resolver and the time resolved from db-------------------
 	public static Reimbursement updateReimb(int reimbID, int statusID, int resolver) {
 		try(Connection connection = ConnectionUtil.getConnection()) {
-			
 			String sql = "UPDATE reimbursements SET status_ID = ?," +
 					"resolver = ?" +
 					" WHERE reimb_ID = ? RETURNING *"; 
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
-			
-			statement.setInt(1, statusID);
-			statement.setInt(2, resolver);
-			statement.setInt(3, reimbID);
+						
+			statement.setInt(1, statusID); System.out.println(statusID);
+			statement.setInt(2, resolver); System.out.println(resolver);
+			statement.setInt(3, reimbID); System.out.println(reimbID);
 			
 			ResultSet result = statement.executeQuery();
 			
 			if(result.next()) {
 				return extractReimb(result); //updates the java reimb object with values from db
 			}
+			System.out.println("extracted");
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("finished");
 		return null;
 	}
 	
