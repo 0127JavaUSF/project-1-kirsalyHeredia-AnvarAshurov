@@ -36,24 +36,12 @@ public class EmployeeServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		EmployeeService empService = new EmployeeService();
-		
-		System.out.println("I am doGet");
-//		response.setContentType("application/json");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		
-//		empService.getEmployee().get(0).getFirstName()
+		EmployeeService empService = new EmployeeService();		
+		ObjectMapper mapper = new ObjectMapper();		
 		String jsonInString = mapper.writeValueAsString(EmployeeDao.all().get(0));
-		
+		response.setStatus(201);
 		response.getWriter().write(jsonInString);
-		
-		// iterate
-//		String thing = EmployeeController.all().toString();
-		
-//		response.getWriter().write(thing);
-//		response.getWriter().write(allUsers.toString());		
-		
+
 	}
 	
 }

@@ -8,13 +8,12 @@ import com.models.Employee;
  * This could be redundant
  *
  */
+
 public class SessionUtil {
 	
 	private static Employee currentUser;
 	private static String sessionToken;
-	
-	// ensureLoggedIn method will REDIRECT to LOGIN page if USER is not logged in
-	
+		
 	public static boolean isLoggedIn() {
 		
 		System.out.println(SessionUtil.getCurrentUser());
@@ -24,7 +23,7 @@ public class SessionUtil {
 		} else {
 			return false;
 		}
-//		return SessionUtil.getCurrentUser() == null;
+
 	}
 	
 	public static void login(String username, String password) {
@@ -32,27 +31,19 @@ public class SessionUtil {
 		Employee empl = EmployeeDao.findByCredentials(username, password);
 		
 		if(empl != null) {
-			System.out.println("Logging in...");
 			SessionUtil.setSessionToken(EmployeeDao.resetSessionToken(empl));
 			SessionUtil.setCurrentUser(empl);
-			System.out.println("Login complete");
 		} else {
-			System.out.println("Can't login");		
+			System.out.println("Unable to login.");		
 		}
 		
 	}
 	
 	public static void logout() {
-		System.out.println("I am LOGOUT function");
-		System.out.println("Curr user: " + SessionUtil.getCurrentUser());
+		
 		EmployeeDao.resetSessionToken(SessionUtil.getCurrentUser());
-		
 		SessionUtil.setCurrentUser(null);
-
-		System.out.println("Curr user: " + SessionUtil.getCurrentUser());
 		SessionUtil.setSessionToken(null);
-		
-		System.out.println("Logged out: success");	
 		
 	}
 	
