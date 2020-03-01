@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.daos.ReimbDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.models.Reimbursement;
+import com.service.ReimbService;
 
 
 public class AdminServlet extends HttpServlet {
@@ -40,4 +41,17 @@ public class AdminServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		om.writeValue(resp.getWriter(), allUserReimbs);	
 	}
+   	
+   	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+   		ObjectMapper om = new ObjectMapper();
+		Reimbursement reimb = om.readValue(req.getReader(), Reimbursement.class);
+						
+		System.out.println(reimb); //check
+		
+		//passing to service layer for validation before inputing to the db
+		ReimbService.validateUpdate(reimb);
+		resp.setStatus(201); // created
+   	
+   	}
 }

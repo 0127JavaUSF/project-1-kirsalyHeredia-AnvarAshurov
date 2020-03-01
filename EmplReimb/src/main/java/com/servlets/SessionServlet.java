@@ -38,6 +38,7 @@ public class SessionServlet extends HttpServlet {
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
 		resp.addHeader("Access-Control-Allow-Methods", "GET POST PUT DELETE");
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
