@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.daos.EmployeeDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.service.EmployeeService;
+import com.models.Employee;
 
 public class EmployeeServlet extends HttpServlet {
 	
@@ -19,40 +19,47 @@ public class EmployeeServlet extends HttpServlet {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-		resp.addHeader("Access-Control-Allow-Methods", "GET POST PUT DELETE");
+		resp.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 		
 		super.service(req, resp);
 	}
 
+	// show employee by id
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		EmployeeService empService = new EmployeeService();
+		ObjectMapper mapper = new ObjectMapper();		
 		
-		System.out.println("I am doGet");
-//		response.setContentType("application/json");
+		String[] params = request.getPathInfo().split("/");
+		// EmplReimb/Employee/1
 		
-		ObjectMapper mapper = new ObjectMapper();
+		System.out.println(request.getPathInfo());
 		
-//		empService.getEmployee().get(0).getFirstName()
-		String jsonInString = mapper.writeValueAsString(EmployeeDao.all().get(0));
+		int userId = Integer.parseInt(params[2]);
 		
-		response.getWriter().write(jsonInString);
-		
-		// iterate
-//		String thing = EmployeeController.all().toString();
-		
-//		response.getWriter().write(thing);
-//		response.getWriter().write(allUsers.toString());		
+		if(userId > 0) {
+			Employee empl = EmployeeDao.getEmployeeById(userId);
+			if(empl != null) {
+				response.setStatus(201);
+				response.getWriter().write(mapper.writeValueAsString(empl));
+			} else {
+				response.setStatus(404);
+				response.getWriter().write(mapper.writeValueAsString("Employee with such id does not exist in our record."));
+			}			
+			
+		} else {
+			response.setStatus(422);
+			mapper.writeValueAsString("Employee id must be greater than 0.");
+		}
 		
 	}
 	

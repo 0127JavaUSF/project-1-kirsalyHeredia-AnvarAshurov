@@ -1,21 +1,16 @@
 package com.servlets;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
-
 import com.daos.EmployeeDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.models.Login;
-import com.models.Reimbursement;
+import com.models.Employee;
+import com.util.LoginPojo;
 import com.util.SessionUtil;
 
 /**
@@ -31,7 +26,6 @@ public class SessionServlet extends HttpServlet {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -40,96 +34,96 @@ public class SessionServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-		resp.addHeader("Access-Control-Allow-Methods", "GET POST PUT DELETE");
+		resp.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 		
 		super.service(req, resp);
 	}
 	
+	// get current user request
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		// use this method to check who is currently logged in?
-		
-	}
-	
-	// Login
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
 		response.setContentType("application/json");
 		
-		ObjectMapper om = new ObjectMapper();
-		Login loginTmp = om.readValue(request.getReader(), Login.class);
+		// this is currently logged in user's session token
+		String currentSessionToken = SessionUtil.getSessionToken();
+		Employee empl = EmployeeDao.getCurrentUser(currentSessionToken);
+		ObjectMapper mapper = new ObjectMapper();
 		
-		
-		
-		SessionUtil.login(loginTmp.getUsername(), loginTmp.getPassword());
-		
-		if(SessionUtil.isLoggedIn()) {
-			ObjectMapper mapper = new ObjectMapper();
-			String jsonInString = mapper.writeValueAsString(SessionUtil.getCurrentUser());			
-			response.getWriter().write(jsonInString);
+		if(empl != null) {
+			String objToJson = mapper.writeValueAsString(empl);			
 			response.setStatus(201);
+			response.getWriter().write(objToJson);
 		} else {
-			response.setStatus(422);
+			// no one has logged in
+			response.setStatus(404);
 		}
 		
-//		response.getWriter().write(request.getPathInfo());
-				//.getParameter("username"));
-		//response.getWriter().write(request.getParameter("password"));
+	}
+	
+	// create a login session
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		
-		//response.setContentType("application/json");
-		//System.out.println("Servlet username: " + request.getParameter("username"));
+		response.setContentType("application/json");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		// incoming JSON object contains only user-name and password
+		LoginPojo loginDetails = mapper.readValue(request.getReader(), LoginPojo.class);
+		
+		if(SessionUtil.isLoggedIn()) {
+			response.setStatus(422);
+			response.getWriter().write(mapper.writeValueAsString("Someone is already logged in."));
 			
-//		Employee employee = EmployeeDao.findByCredentials(request.getParameter("username"), request.getParameter("password"));
-//		if(employee != null) {
-//			SessionUtil.login(employee);
-//			ObjectMapper objMapper = new ObjectMapper();
-//			response.setStatus(201);
-//			response.getWriter().write("Session token: " + SessionUtil.getSessionToken() + " <br/>");
-//			response.getWriter().write("First name: " + SessionUtil.getCurrentUser().getFirstName() + " <br/>");
-//			objMapper.writeValue(response.getWriter(), employee);
-//	
-//			Cookie cookie = new Cookie("session_token", SessionUtil.getSessionToken());
-//			response.addCookie(cookie);
-//			
-//		} else {
-//			response.setStatus(404);
-//		}
-		
-//		response.setStatus(201);
+		} else {
+			
+			SessionUtil.login(loginDetails.getUsername(), loginDetails.getPassword());	
+			
+			/**
+			 * TODO: Is it bad to store current user as an object?
+			 */
+			
+			if(SessionUtil.isLoggedIn()) {
+				String jsonInString = mapper.writeValueAsString(SessionUtil.getCurrentUser());			
+				response.getWriter().write(jsonInString);
+				response.setStatus(201);
+				
+				//HttpSession session = request.getSession();
+				//session.setAttribute("session_token", SessionUtil.getSessionToken());
+				//response.setStatus(201);			
+				//Cookie cookie = new Cookie("session_token", SessionUtil.getSessionToken());
+				//cookie.setMaxAge(10*60);
+				//response.addCookie(cookie);
+				
+			} else {
+				response.setStatus(422);
+				response.getWriter().write(mapper.writeValueAsString("Unable to login. This is our fault"));
+			}
+		}
 	}
 	
 	// delete session
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		// findBy(sessionToken: tkn)
-		// TODO: There is no need to extra Employee first. Since session_token is unique. We can just reset it right there and then.
-//		String tmpCookie = null;
-//		Cookie[] cookies = request.getCookies();
-//		for(int i = 0; i < cookies.length; i++) {
-//			if(cookies[i].getName().compareTo("session_token") == 0) {
-//				tmpCookie = cookies[i].getValue();
-//				cookies[i].setValue(null);
-//			}
-//		}
-		// above is delete session token from front-end
-		// below is from back-end
+		ObjectMapper mapper = new ObjectMapper();
+		response.setContentType("application/json");
 		
-		// Employee employee = EmployeeDao.findByCredentials(tmpCookie);
-		// TODO as of now, backend has currentUser that keeps track of currUser.
-		// should I keep this?
-		response.getWriter().write("Logging out: " + SessionUtil.getCurrentUser().getFirstName());
-		SessionUtil.logout();
-		
-		Cookie newCookie = new Cookie("session_token", "");
-		newCookie.setMaxAge(0);
-		response.addCookie(newCookie);	
-		response.setStatus(201);
-		response.getWriter().write("Logged out successfully.");
-		// reset session token inside database
+		if(SessionUtil.isLoggedIn()) {
+			SessionUtil.logout();
+			if(SessionUtil.getCurrentUser() == null) {
+				String jsonInString = mapper.writeValueAsString(SessionUtil.getCurrentUser());			
+				response.getWriter().write(jsonInString);
+				response.setStatus(201);
+			} else {
+				response.setStatus(422);
+				response.getWriter().write(mapper.writeValueAsString("We were unable to log you out. This is our fault."));
+			}			
+		} else {
+			response.setStatus(404);
+			response.getWriter().write(mapper.writeValueAsString("There is no one logged in to log out."));
+		}
 		
 	}
 }

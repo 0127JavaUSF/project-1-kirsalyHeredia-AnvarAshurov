@@ -40,25 +40,12 @@ public class EmployeeDao {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			// user with username exists?
 			if(rs.next()) {
-				System.out.println("Username exists. Checking password...");
-				//String hashedPass = rs.getString("password_digest");
-				String hashedPass = rs.getString("password");
-				
-				// password is correct?
-				//if(isPassword(password, hashedPass)) {
-				if(hashedPass.compareTo(password) == 0) {
-					System.out.println("Password is correct");
+				String hashedPwd = rs.getString("password");
+				if(EmployeeDao.isPassword(password, hashedPwd)) {
 					return EmployeeDao.extractEmployee(rs);
-				} else {	
-					System.out.println("Password is incorrect. Try again");
 				}
-				
-			} else {
-				System.out.println("No username match");
 			}
-			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -66,13 +53,13 @@ public class EmployeeDao {
 		return null;
 	}
 	
-	public static Employee findByCredentials(String tkn) {
+	public static Employee getEmployeeById(int userId) {
 		
 		try(Connection connection = ConnectionUtil.getConnection()) {
 			
-			String sql = "SELECT * FROM users WHERE session_token = ?";
+			String sql = "SELECT * FROM users WHERE user_id = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setString(1, tkn);
+			ps.setInt(1, userId);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				return EmployeeDao.extractEmployee(rs);
@@ -81,13 +68,33 @@ public class EmployeeDao {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
+
+	public static boolean isPassword(String plainText, String hashedPwd) {
+		
+		return BCrypt.checkpw(plainText, hashedPwd);
+		
+	}
 	
-	public static boolean isPassword(String plainText, String hashed) {
+	public static Employee getCurrentUser(String sessionToken) {
 		
-		return BCrypt.checkpw(plainText, hashed);
+		try(Connection connection = ConnectionUtil.getConnection()) {
+			
+			String sql = "SELECT * FROM users WHERE session_token = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, sessionToken);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return EmployeeDao.extractEmployee(rs);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
+		return null;
 	}
 	
 	public static Employee extractEmployee(ResultSet rs) throws SQLException {
@@ -112,7 +119,7 @@ public class EmployeeDao {
 		int roleId = rs.getInt("role_id");
 		String password = rs.getString("password");
 		
-		return new Employee(userId, firstName, lastName, email, username, roleId, sessionToken, password);
+		return new Employee(userId, firstName, lastName, email, username, roleId, sessionToken);
 		
 	}
 	
@@ -124,30 +131,25 @@ public class EmployeeDao {
 		try(Connection connection = ConnectionUtil.getConnection()) {
 		
 			/**
-			 *  TODO: Mitch talked about vulnarability of storing sensitive info in StringPool. Discuss.
+			 *  TODO: Mitch talked about vulnerability of storing sensitive info in StringPool. Discuss.
 			 */
 			String passwordDigest = BCrypt.hashpw(password, BCrypt.gensalt());
 			
-			String sql = "UPDATE users SET COLUMN password_digest = ? WHERE username = ?";
+			String sql = "UPDATE users SET COLUMN password = ? WHERE username = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, passwordDigest);
 			ps.setString(2,  username);
 			
 			if(ps.executeUpdate() != 0) {
-
-				System.out.println(username + "'s password has been stored securily.");
-			
+				System.out.println(username + "'s password has been stored securily.");			
 			}
 			
 		} catch(SQLException e) {
-			
 			e.printStackTrace();
-		
 		}
 		
 	}
 	
-	// generateSessionToken
 	public static String generateSessionToken() {
 		
 		/**
@@ -209,8 +211,7 @@ public class EmployeeDao {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}		
-		
-		return allEmpl;
+		return allEmpl;	
 		
 	}
 

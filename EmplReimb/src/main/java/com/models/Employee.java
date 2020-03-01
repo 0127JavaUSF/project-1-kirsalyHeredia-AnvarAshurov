@@ -29,10 +29,9 @@ public class Employee {
 	private String email;
 	private String username;
 	private int roleId;
-	private String password;
 	private String sessionToken;
 	
-	public Employee(int userId, String firstName, String lastName, String email, String username, int roleId, String sessionToken, String password) {
+	public Employee(int userId, String firstName, String lastName, String email, String username, int roleId, String sessionToken) {
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -40,7 +39,6 @@ public class Employee {
 		this.username = username;
 		this.roleId = roleId;
 		this.sessionToken = sessionToken;
-		this.password = password;
 	}
 	
 	public String getFirstName() {
@@ -91,14 +89,6 @@ public class Employee {
 		this.roleId = roleId;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getSessionToken() {
 		return sessionToken;
 	}
@@ -114,7 +104,6 @@ public class Employee {
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + roleId;
 		result = prime * result + ((sessionToken == null) ? 0 : sessionToken.hashCode());
 		result = prime * result + userId;
@@ -146,11 +135,6 @@ public class Employee {
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
 		if (roleId != other.roleId)
 			return false;
 		if (sessionToken == null) {
@@ -171,9 +155,7 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", username=" + username + ", roleId=" + roleId + ", password=" + password + ", sessionToken="
-				+ sessionToken + "]";
+				+ ", username=" + username + ", roleId=" + roleId + ", sessionToken=" + sessionToken + "]";
 	}
 
-	
 }
