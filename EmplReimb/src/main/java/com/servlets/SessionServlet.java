@@ -1,21 +1,15 @@
 package com.servlets;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.json.JSONObject;
-
-import com.daos.EmployeeDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.models.Login;
-import com.models.Reimbursement;
 import com.util.SessionUtil;
 
 /**
@@ -38,8 +32,9 @@ public class SessionServlet extends HttpServlet {
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-		resp.addHeader("Access-Control-Allow-Methods", "GET POST PUT DELETE");
+		resp.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 		
 		super.service(req, resp);
@@ -70,34 +65,16 @@ public class SessionServlet extends HttpServlet {
 			String jsonInString = mapper.writeValueAsString(SessionUtil.getCurrentUser());			
 			response.getWriter().write(jsonInString);
 			response.setStatus(201);
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("session_token", SessionUtil.getSessionToken());
+			response.setStatus(201);			
+//			Cookie cookie = new Cookie("session_token", SessionUtil.getSessionToken());
+//			cookie.setMaxAge(10*60);
+//			response.addCookie(cookie);
 		} else {
 			response.setStatus(422);
 		}
-		
-//		response.getWriter().write(request.getPathInfo());
-				//.getParameter("username"));
-		//response.getWriter().write(request.getParameter("password"));
-		
-		//response.setContentType("application/json");
-		//System.out.println("Servlet username: " + request.getParameter("username"));
-			
-//		Employee employee = EmployeeDao.findByCredentials(request.getParameter("username"), request.getParameter("password"));
-//		if(employee != null) {
-//			SessionUtil.login(employee);
-//			ObjectMapper objMapper = new ObjectMapper();
-//			response.setStatus(201);
-//			response.getWriter().write("Session token: " + SessionUtil.getSessionToken() + " <br/>");
-//			response.getWriter().write("First name: " + SessionUtil.getCurrentUser().getFirstName() + " <br/>");
-//			objMapper.writeValue(response.getWriter(), employee);
-//	
-//			Cookie cookie = new Cookie("session_token", SessionUtil.getSessionToken());
-//			response.addCookie(cookie);
-//			
-//		} else {
-//			response.setStatus(404);
-//		}
-		
-//		response.setStatus(201);
 	}
 	
 	// delete session
@@ -120,14 +97,29 @@ public class SessionServlet extends HttpServlet {
 		// Employee employee = EmployeeDao.findByCredentials(tmpCookie);
 		// TODO as of now, backend has currentUser that keeps track of currUser.
 		// should I keep this?
-		response.getWriter().write("Logging out: " + SessionUtil.getCurrentUser().getFirstName());
-		SessionUtil.logout();
 		
-		Cookie newCookie = new Cookie("session_token", "");
-		newCookie.setMaxAge(0);
-		response.addCookie(newCookie);	
-		response.setStatus(201);
-		response.getWriter().write("Logged out successfully.");
+		
+//		response.getWriter().write("Logging out: " + SessionUtil.getCurrentUser().getFirstName());
+		
+		if(SessionUtil.isLoggedIn()) {
+			System.out.println("Someone is logged in.");
+			SessionUtil.logout();
+			if(SessionUtil.getCurrentUser() == null) {
+				ObjectMapper mapper = new ObjectMapper();
+				String jsonInString = mapper.writeValueAsString(SessionUtil.getCurrentUser());			
+				response.getWriter().write(jsonInString);
+				response.setStatus(201);		
+			} else {
+				response.setStatus(422);
+				response.getWriter().write("Somethin' wrong.");
+			}
+		} else {
+			System.out.println("No one is logged in.");
+		}
+		
+//		Cookie newCookie = new Cookie("session_token", "");
+//		newCookie.setMaxAge(0);
+//		response.addCookie(newCookie);	
 		// reset session token inside database
 		
 	}
