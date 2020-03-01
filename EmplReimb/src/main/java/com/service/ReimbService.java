@@ -9,7 +9,7 @@ public class ReimbService {
 	public static void validateReimb( Reimbursement reimb ) {
 		
 		//hardcoding 4 for danny until session works
-		reimb.setAuthor(4);
+		//reimb.setAuthor(4);
 		//all new reimb have a default status of pending(1)
 		reimb.setStatusID(1);
 		
@@ -18,11 +18,11 @@ public class ReimbService {
 		
 	}
 	
-	public static void validateUpdate(String status) {
+	public static void validateUpdate(Reimbursement reimb) {
 		
-		//hardcode 2 for billy until session works
-		//hardcode id 2
-//		/ReimbDao.updateReimb(2, statusID, 2);
+		//hardcode 2 for reimbID
+		//hardcode id 2 for resolver
+		ReimbDao.updateReimb(2, reimb.getStatusID(), 2);
 		
 	}
 	

@@ -129,7 +129,7 @@ public class ReimbDao {
 		List<Reimbursement> allReimbursements = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.getConnection()){
 			
-			String sql = "SELECT * FROM reimbursements";
+			String sql = "SELECT * FROM reimbursements ORDER BY status_ID, submitted";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
 			
@@ -155,7 +155,7 @@ public class ReimbDao {
 		try (Connection connection = ConnectionUtil.getConnection()){
 			System.out.println(author);		
 			
-			String sql = "SELECT * FROM reimbursements " + "WHERE author = ?";
+			String sql = "SELECT * FROM reimbursements " + "WHERE author = ? ORDER BY status_ID, submitted";
 			
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, author);
