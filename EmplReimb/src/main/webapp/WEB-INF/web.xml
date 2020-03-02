@@ -21,11 +21,6 @@
 	  		<servlet-class>com.servlets.SessionServlet</servlet-class>
 	  </servlet>
 	  <servlet>
-	  	<servlet-name>DriverClass</servlet-name>
-	  	<servlet-class>com.servlets.DriverClass</servlet-class>
-	  	<load-on-startup>0</load-on-startup>
-	  </servlet>
-	  <servlet>
 	  	<servlet-name>DisplayServlet</servlet-name>
 	  	<servlet-class>com.servlets.AllReimbServlet</servlet-class>
 	  </servlet>
@@ -46,10 +41,6 @@
 	  <servlet-mapping>
 	  		<servlet-name>SessionServlet</servlet-name>
 	  		<url-pattern>/SessionServlet</url-pattern>
-	  </servlet-mapping>
-	  <servlet-mapping>
-	  	<servlet-name>DriverClass</servlet-name>
-	  	<url-pattern>/DriverClass</url-pattern>
 	  </servlet-mapping>
 	  <servlet-mapping>
 	  	<servlet-name>DisplayServlet</servlet-name>
