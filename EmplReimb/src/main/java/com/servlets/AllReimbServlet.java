@@ -2,19 +2,16 @@ package com.servlets;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.daos.ReimbDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.models.Reimbursement;
 
+public class AllReimbServlet extends HttpServlet{
 
-public class AllReimbServlet extends HttpServlet {
-	
 	private static final long serialVersionUID = 1L;
 	ObjectMapper om = new ObjectMapper();
 
@@ -61,5 +58,4 @@ public class AllReimbServlet extends HttpServlet {
 		om.writeValue(resp.getWriter(), userReimbs);
    		
 	}
-
 }
